@@ -510,9 +510,6 @@ class DieselPumpLine(models.Model):
     cash_purchase = fields.Boolean("Cash Purchase")
     new_time = fields.Char("Filling Time")
 
-
-
-
     @api.multi
     def unlink(self):
         for rec in self:
@@ -556,8 +553,6 @@ class DieselPumpLine(models.Model):
                     line.move_id.date = date
                     line.move_id.date_expected = date
         return True
-
-
 
     @api.multi
     def write(self,vals):
@@ -618,22 +613,10 @@ class DieselPumpLine(models.Model):
 
         return super(DieselPumpLine, self).write(vals)
 
-
-
-
-
-
     @api.depends('litre','per_litre')
     def compute_total_diesel_amount(self):
         for rec in self:
             rec.total_litre_amount = rec.litre * rec.per_litre
-
-
-
-
-
-
-
 
 class DriverDailyStatement(models.Model):
     _name = 'driver.daily.statement'
@@ -660,29 +643,19 @@ class DriverDailyStatement(models.Model):
         date = datetime.datetime.strptime(date, "%Y-%m-%d")
         return str(date.day)+str('/')+str(date.month)+str('/')+str(date.year)
 
-
-
     @api.model
     def default_get(self, default_fields):
         vals = super(DriverDailyStatement, self).default_get(default_fields)
 
         vals.update({'user_id' :self.env.user.id,
                             })
-
-
-
         return vals
-
-
-
 
     @api.onchange('vehicle_no','theoretical_close_km')
     def onchange_vehicle_no(self):
         if self.vehicle_no:
             self.start_km = self.vehicle_no.odometer
             # self.actual_close_km = self.theoretical_close_km
-
-
 
     @api.multi
     @api.depends('start_km','actual_close_km')
@@ -757,9 +730,6 @@ class DriverDailyStatement(models.Model):
 
     approved_by = fields.Many2one('hr.employee','Approved By')
     sign = fields.Binary('Sign')
-
-
-
     cleaner_bata = fields.Float('Cleaner Bata')
 
     reference = fields.Char('Reference No:')
@@ -769,15 +739,12 @@ class DriverDailyStatement(models.Model):
     hrs_worked = fields.Char(string="Hrs Worked",compute='compute_hrs_worked')
     idle_hrs = fields.Float(string="IDLE Hrs")
     bd_hrs = fields.Float(string="B/D Hrs")
-
     ot_time = fields.Float("Over Time time")
     ot_rate = fields.Float("Over Time Bata")
     ot_amt = fields.Float("Over time Amount",compute='compute_amount')
     deposit = fields.Float("Food Allowance")
     driver_bata = fields.Float("Driver Bata")
     trip_sheet_no = fields.Char("Trip Sheet No")
-
-
     own_vehicle = fields.Boolean("Own Vehicle")
     rent_vehicle = fields.Boolean("Rent Vehicle")
     rent_vehicle_partner_id = fields.Many2one('res.partner', "Rent Vehicle Owner",
@@ -790,11 +757,22 @@ class DriverDailyStatement(models.Model):
     rent_driver = fields.Char("Driver Name")
     rent_cleaner = fields.Char("Rent Cleaner")
 
+    @api.constrains('date')
+    def _check_date(self):
+        for record in self:
+            selected_date = fields.Date.from_string(record.date)
+            today = fields.Date.from_string(fields.Date.today())
+
+            if selected_date < today:
+                raise ValidationError("You cannot select a date in the past. Please verify the date.")
+
+            if selected_date > (today + timedelta(days=3)):
+                raise ValidationError("You cannot update the record after three days from the selected date.")
 
     @api.depends('ot_rate','ot_time')
     def compute_amount(self):
-        for rec in self:
-            rec.ot_amt = rec.ot_time * rec.ot_rate
+            for rec in self:
+                rec.ot_amt = rec.ot_time * rec.ot_rate
 
 
     @api.model
@@ -882,19 +860,8 @@ class DriverDailyStatement(models.Model):
         self.state = 'cancelled'
 
 
-
-
-
-
-
-
 class DriverDailyStatementLine(models.Model):
     _name = 'driver.daily.statement.line'
-
-
-
-
-
 
     @api.onchange('qty')
     def onchange_qty_rate(self):
@@ -962,13 +929,6 @@ class DriverDailyStatementLine(models.Model):
                     pass
 
 
-
-
-
-
-
-
-
     @api.onchange('start_km','end_km')
     def _onchange_end_km(self):
         if self.end_km and self.start_km:
@@ -1004,10 +964,6 @@ class DriverDailyStatementLine(models.Model):
                 'message': "Driver Betha cannot be less than the minimum value."
                 }
             }
-
-
-
-
 
 
     invoice_date = fields.Date("Date")
@@ -1049,13 +1005,3 @@ class DriverDailyStatementLine(models.Model):
 #     _inherit = 'fleet.vehicle'
 #
 #     tanker_stock_balance = fields.Float(string="Stock Balance")
-
-
-
-
-
-
-
-
-
-
