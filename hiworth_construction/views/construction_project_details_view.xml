@@ -681,11 +681,6 @@
                             <field name="discount_account" attrs="{'required':[('discount_amount','!=',0)]}"/>
                         </group>
                     </group>
-                    <group rows="1">
-                        <group>
-                            <field name="terms_id" widget="many2many_tags" string="Terms &amp; Conditions"/>
-                        </group>
-                    </group>
                 </xpath>
 
                 <xpath expr="//notebook/page/field[@name='notes']"
@@ -721,11 +716,14 @@
                                attrs="{'readonly':[('state','in',['confirmed','approved','done'])]}"/>
                     </group>
                     <field name="machine_char" attrs="{'invisible':[('machine_bool','=',False)]}"/>
-
-
+                    <field name="terms_ids" string="Terms&amp;Conditions">
+                        <tree editable="bottom">
+                            <field name="terms_id" invisible="1"/>
+                            <field name="term"/>
+                            <field name="condition"/>
+                        </tree>
+                    </field>
                 </xpath>
-
-
                 <xpath expr="//group/group/field[@name='company_id']" position="attributes">
                     <attribute name="readonly">1</attribute>
                 </xpath>

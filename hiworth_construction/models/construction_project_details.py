@@ -1607,13 +1607,16 @@ class purchase_item_category(models.Model):
 class TermsCondition(models.Model):
 	_name = 'terms.condition'
 
-	name = fields.Char(string='name')
+	terms_id = fields.Many2one('purchase.order')
+	term = fields.Char("Terms")
+	condition = fields.Char("Conditions")
+
 
 class purchase_order(models.Model):
 	_inherit = 'purchase.order'
 	_order = 'id desc'
 
-	terms_id = fields.Many2many('terms.condition')
+	terms_ids = fields.One2many('terms.condition', 'terms_id')
 
 	@api.model
 	def _needaction_domain_get(self):
