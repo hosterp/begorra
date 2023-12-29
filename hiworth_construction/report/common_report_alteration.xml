@@ -363,7 +363,7 @@
                                         <t t-set="total_cgst" t-value="total_cgst+line.cgst_tax"/>
                                         <t t-set="total_sgst" t-value="total_sgst+line.sgst_tax"/>
                                         <t t-set="total_igst" t-value="total_igst+line.igst_tax"/>
-                                        <t t-set="total_tax" t-value="total_tax+total_cgst+total_sgst+total_igst"/>
+                                        <t t-set="total_tax" t-value="total_tax+line.cgst_tax+line.sgst_tax+line.igst_tax"/>
                                         <t t-set="total" t-value="total+line.price_subtotal"/>
                                     </tr>
                                     <tr style="border-right: 1px solid black;border-bottom: 1px solid black;">
