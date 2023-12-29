@@ -23,7 +23,8 @@
                         <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo"
                              style="max-height: 83px;min-width: 120px;"/>
                     </div>
-                    <div class="col-xs-9 text-left" style="font-size: 18px;margin-top:30px;margin-right: -100px;margin-left: 100px;"
+                    <div class="col-xs-9 text-left"
+                         style="font-size: 18px;margin-top:30px;margin-right: -100px;margin-left: 100px;"
                          t-field="company.rml_header1"/>
                 </div>
                 <div class="col-xs-12 text-center" style="font-size: 20px;margin-top:10px;">
@@ -391,7 +392,8 @@
                                         <td style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>Packing Charge</b>
                                         </td>
-                                        <td colspan="4" style="border-left: hidden; border-right: 1px solid black;"></td>
+                                        <td colspan="4"
+                                            style="border-left: hidden; border-right: 1px solid black;"></td>
                                         <td style="border-right;" class="oe_right">
                                             <span t-field="o.packing_charge" class="oe_right"/>
                                         </td>
@@ -401,7 +403,8 @@
                                         <td style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>Loading Charge</b>
                                         </td>
-                                        <td colspan="4" style="border-left: hidden; border-right: 1px solid black;"></td>
+                                        <td colspan="4"
+                                            style="border-left: hidden; border-right: 1px solid black;"></td>
                                         <td style="border-right;" class="oe_right">
                                             <span t-field="o.loading_charge" class="oe_right"/>
                                         </td>
@@ -411,7 +414,8 @@
                                         <td style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>Transporting Charge</b>
                                         </td>
-                                        <td colspan="4" style="border-left: hidden; border-right: 1px solid black;"></td>
+                                        <td colspan="4"
+                                            style="border-left: hidden; border-right: 1px solid black;"></td>
 
                                         <td style="border-right;" class="oe_right">
                                             <span t-field="o.transporting_charge" class="oe_right"/>
@@ -422,7 +426,8 @@
                                         <td style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>Discount Amount</b>
                                         </td>
-                                        <td colspan="4" style="border-left: hidden; border-right: 1px solid black;"></td>
+                                        <td colspan="4"
+                                            style="border-left: hidden; border-right: 1px solid black;"></td>
 
                                         <td style="border-right;" class="oe_right">
                                             <span t-field="o.discount_amount" class="oe_right"/>
@@ -433,7 +438,8 @@
                                         <td style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>CGST</b>
                                         </td>
-                                        <td colspan="4" style="border-left: hidden; border-right: 1px solid black;"></td>
+                                        <td colspan="4"
+                                            style="border-left: hidden; border-right: 1px solid black;"></td>
                                         <td style="border-right;" class="oe_right">
                                             <span t-field="o.cgst_tax" class="oe_right"/>
                                         </td>
@@ -443,7 +449,8 @@
                                         <td style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>SGST</b>
                                         </td>
-                                        <td colspan="4" style="border-left: hidden; border-right: 1px solid black;"></td>
+                                        <td colspan="4"
+                                            style="border-left: hidden; border-right: 1px solid black;"></td>
                                         <td style="border-right;" class="oe_right">
                                             <span t-field="o.sgst_tax" class="oe_right"/>
                                         </td>
@@ -454,7 +461,8 @@
                                         <td style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>IGST</b>
                                         </td>
-                                        <td colspan="4" style="border-left: hidden; border-right: 1px solid black;"></td>
+                                        <td colspan="4"
+                                            style="border-left: hidden; border-right: 1px solid black;"></td>
                                         <td style="border-right;" class="oe_right">
                                             <span t-field="o.igst_tax" class="oe_right"/>
                                         </td>
@@ -465,9 +473,12 @@
                                         <td style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <strong>Grand Total</strong>
                                         </td>
-                                        <td colspan="4" style="border-left: hidden; border-right: 1px solid black;"></td>
+                                        <td colspan="4"
+                                            style="border-left: hidden; border-right: 1px solid black;"></td>
                                         <td class="oe_right" style="border-right;">
-                                            <strong><span t-esc="round(o.amount_total2)" class="oe_right"/></strong>
+                                            <strong>
+                                                <span t-esc="round(o.amount_total2)" class="oe_right"/>
+                                            </strong>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -502,34 +513,76 @@
                                 </strong>
                             </div>
                             <div class="col-xs-5" style="font-size: 12px;" align="left">
-                                <ol>
+                                <ol style="padding-left:20px;">
                                     <t t-if="o.price_bool==True">
                                         <li>
-                                            <strong>Price:</strong>
+                                            <strong>Price         :</strong>
                                             <span t-field="o.price_char"/>
                                         </li>
                                     </t>
                                     <t t-if="o.payment_bool==True">
                                         <li>
-                                            <strong>Payment:</strong>
+                                            <strong>Payment       :</strong>
                                             <span t-field="o.payment_char"/>
                                         </li>
                                     </t>
                                     <t t-if="o.freight_bool==True">
                                         <li>
-                                            <strong>Freight:</strong>
+                                            <strong>Freight       :</strong>
                                             <span t-field="o.freight_char"/>
                                         </li>
                                     </t>
                                     <t t-if="o.delivery_bool==True">
                                         <li>
-                                            <strong>Delivery:</strong>
+                                            <strong>Delivery      :</strong>
                                             <span t-field="o.delivery_char"/>
+                                        </li>
+                                    </t>
+                                    <t t-if="o.transport_bool==True">
+                                        <li>
+                                            <strong>Transportation:</strong>
+                                            <span t-field="o.transport_char"/>
+                                        </li>
+                                    </t>
+                                    <t t-if="o.warranty_bool==True">
+                                        <li>
+                                            <strong>Warranty      :</strong>
+                                            <span t-field="o.warranty_char"/>
+                                        </li>
+                                    </t>
+                                    <t t-if="o.service_bool==True">
+                                        <li>
+                                            <strong>Service       :</strong>
+                                            <span t-field="o.service_char"/>
+                                        </li>
+                                    </t>
+                                    <t t-if="o.tyres_bool==True">
+                                        <li>
+                                            <strong>Tyres         :</strong>
+                                            <span t-field="o.tyres_char"/>
+                                        </li>
+                                    </t>
+                                    <t t-if="o.accessory_bool==True">
+                                        <li>
+                                            <strong>Accessories   :</strong>
+                                            <span t-field="o.accessory_char"/>
+                                        </li>
+                                    </t>
+                                    <t t-if="o.permenent_reg_bool==True">
+                                        <li>
+                                            <strong>Permenent Reg :</strong>
+                                            <span t-field="o.permenent_reg_char"/>
+                                        </li>
+                                    </t>
+                                    <t t-if="o.fastag_bool==True">
+                                        <li>
+                                            <strong>Fastag        :</strong>
+                                            <span t-field="o.fastag_char"/>
                                         </li>
                                     </t>
                                     <t t-if="o.machine_bool==True">
                                         <li>
-                                            <strong>Machinery:</strong>
+                                            <strong>Machinery     :</strong>
                                             <span t-field="o.machine_char"/>
                                         </li>
                                     </t>
