@@ -141,7 +141,11 @@
                                 <tr style="border-bottom: 1px solid black;">
                                     <td style="border-right: 1px solid black;">Date</td>
                                     <td class="text-left">
-                                        <span t-field="o.date_order"/>
+                                        <t t-set="formatted_date"
+                                           t-value="datetime.datetime.strptime(o.date_order, '%Y-%m-%d %H:%M:%S').strftime('%d-%m-%Y') or ''"/>
+                                        <span t-esc="formatted_date"/>
+
+                                        <!--                                        <span t-esc="format_date"/>-->
                                     </td>
                                 </tr>
                                 <tr style="border-bottom: 1px solid black;">
@@ -153,7 +157,9 @@
                                 </tr>
                                 <tr style="border-bottom: 1px solid black;">
                                     <td style="border-right: 1px solid black;">No</td>
-                                    <td class="text-left"/>
+                                    <td class="text-left">
+                                        <span t-field="o.mpr_id.name"/>
+                                    </td>
                                 </tr>
                             </table>
 
@@ -265,8 +271,8 @@
                             <table style="width:100%;border: 1px solid black;font-size: 12px;">
                                 <thead>
                                     <tr style="border: 1px solid black;">
-                                        <th style="border-right: 1px solid black;">Sl No</th>
-                                        <th style="border-right: 1px solid black;">Description</th>
+                                        <th class="text-center" style="border-right: 1px solid black;">Sl No</th>
+                                        <th class="text-center" style="border-right: 1px solid black;">Description</th>
                                         <th class="text-center" style="border-right: 1px solid black;">
                                             <strong>Qty</strong>
                                         </th>
@@ -275,7 +281,7 @@
                                         </th>
                                         <th class="text-center" style="border-right: 1px solid black;">Rate(INR)</th>
                                         <!--<th class="text-center" style="border-right: 1px solid black;">DISC</th>-->
-                                        <th class="text-center" style="border-right: 1px solid black;">Tax Rate</th>
+                                        <th class="text-center" style="border-right: 1px solid black;">Tax</th>
                                         <th class="text-center" style="border-right: 1px solid black;">
                                             <strong>CGST</strong>
                                         </th>
@@ -300,7 +306,7 @@
                                             <span t-esc="sl_no"/>
                                         </td>
 
-                                        <td class="text-left"
+                                        <td class="text-centre"
                                             style="border-right: 1px solid black;border-bottom: 1px solid black;">
                                             <span t-field="line.name"/>
                                         </td>
@@ -318,19 +324,21 @@
                                         <!-- <td  class="text-center" style="border-right: 1px solid black;border-bottom: 1px solid black;"></td>-->
                                         <td class="text-center"
                                             style="border-right: 1px solid black;border-bottom: 1px solid black;">
-                                            <span t-esc="','.join(map(lambda x: str(x.name), line.taxes_id))"/>
+                                            <!--                                            <span t-esc="','.join(map(lambda x: str(x.name), line.taxes_id))"/>Rate(INR)-->
+                                            <span t-esc="line.price_subtotal"/>
                                         </td>
                                         <td class="text-right"
                                             style="border-right: 1px solid black;border-bottom: 1px solid black;">
-                                            <t t-set="tax_rate" t-value="0"/>
-                                            <t t-if="line.cgst_tax and line.sgst_tax and not line.igst_tax">
-                                                <t t-set="tax_rate" t-value="line.cgst_tax + line.sgst_tax"/>
-                                                <span t-esc="tax_rate"/>
-                                            </t>
-                                            <t t-if="line.cgst_tax and  line.igst_tax and not line.sgst_tax">
-                                                <t t-set="tax_rate" t-value="line.cgst_tax + line.igst_tax"/>
-                                                <span t-esc="tax_rate"/>
-                                            </t>
+                                            <span t-esc="','.join(map(lambda x: str(x.name), line.taxes_id))"/>
+                                            <!--                                            <t t-set="tax_rate" t-value="0"/>-->
+                                            <!--                                            <t t-if="line.cgst_tax and line.sgst_tax and not line.igst_tax">-->
+                                            <!--                                                <t t-set="tax_rate" t-value="line.cgst_tax + line.sgst_tax"/>-->
+                                            <!--                                                <span t-esc="tax_rate"/>-->
+                                            <!--                                            </t>-->
+                                            <!--                                            <t t-if="line.cgst_tax and  line.igst_tax and not line.sgst_tax">-->
+                                            <!--                                                <t t-set="tax_rate" t-value="line.cgst_tax + line.igst_tax"/>-->
+                                            <!--                                                <span t-esc="tax_rate"/>-->
+                                            <!--                                            </t>-->
 
                                         </td>
 
@@ -354,7 +362,16 @@
                                         </td>
                                         <td class="text-right"
                                             style="border-right: 1px solid black;border-bottom: 1px solid black;">
-                                            <span t-field="line.price_subtotal"/>
+                                            <!--                                            <t t-set="net_price" t-value="0"/>-->
+                                            <!--                                             <t t-if="line.cgst_tax and line.sgst_tax and not line.igst_tax">-->
+                                            <!--                                                <t t-set="net_price" t-value="line.price_subtotal + line.cgst_tax + line.sgst_tax"/>-->
+                                            <!--                                                <span t-esc="net_price"/>-->
+                                            <!--                                            </t>-->
+                                            <!--                                            <t t-if="line.cgst_tax and  line.igst_tax and not line.sgst_tax">-->
+                                            <!--                                                <t t-set="tax_rate" t-value="line.price_subtotal + line.cgst_tax + line.igst_tax"/>-->
+                                            <!--                                                <span t-esc="net_price"/>-->
+                                            <!--                                            </t>-->
+                                            <span t-field="line.total"/>
 
                                         </td>
 
@@ -363,119 +380,111 @@
                                         <t t-set="total_cgst" t-value="total_cgst+line.cgst_tax"/>
                                         <t t-set="total_sgst" t-value="total_sgst+line.sgst_tax"/>
                                         <t t-set="total_igst" t-value="total_igst+line.igst_tax"/>
-                                        <t t-set="total_tax" t-value="total_tax+line.cgst_tax+line.sgst_tax+line.igst_tax"/>
-                                        <t t-set="total" t-value="total+line.price_subtotal"/>
+                                        <t t-set="total_tax"
+                                           t-value="total_tax+line.cgst_tax+line.sgst_tax+line.igst_tax"/>
+                                        <t t-set="total" t-value="total+line.total"/>
                                     </tr>
                                     <tr style="border-right: 1px solid black;border-bottom: 1px solid black;">
-                                        <td colspan="4" style="border-left: hidden;border-bottom:hidden;"></td>
-                                        <td style="border-right: 1px solid black;border-left: 1px solid black;">
+                                        <td colspan="6" style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td colspan="3"
+                                            style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>SUB TOTAL</b>
                                         </td>
-                                        <td class="text-right" style="border-right: 1px solid black;">
-                                            <span t-esc="total_tax"/>
-                                        </td>
-                                        <td class="text-right" style="border-right: 1px solid black;">
-                                            <span t-esc="total_cgst"/>
-                                        </td>
-                                        <td class="text-right" style="border-right: 1px solid black;">
-                                            <span t-esc="total_sgst"/>
-                                        </td>
-                                        <td class="text-right" style="border-right: 1px solid black;"><![CDATA[&nbsp;]]>
-                                            <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>&#160;<span t-esc="total_igst"/>
-                                        </td>
+                                        <!--                                        <td class="text-right" style="border-right: 1px solid black;">-->
+                                        <!--                                            <span t-esc="total_tax"/>-->
+                                        <!--                                        </td>-->
+                                        <!--                                        <td class="text-right" style="border-right: 1px solid black;">-->
+                                        <!--                                            <span t-esc="total_cgst"/>-->
+                                        <!--                                        </td>-->
+                                        <!--                                        <td class="text-right" style="border-right: 1px solid black;">-->
+                                        <!--                                            <span t-esc="total_sgst"/>-->
+                                        <!--                                        </td>-->
+                                        <!--                                        <td class="text-right" style="border-right: 1px solid black;"><![CDATA[&nbsp;]]>-->
+                                        <!--                                            <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>&#160;<span t-esc="total_igst"/>-->
+                                        <!--                                        </td>-->
                                         <td class="text-right" style="border-right: 1px solid black;">
                                             <span t-esc="total"/>
                                         </td>
                                     </tr>
                                     <tr style="border-right: 1px solid black;border-bottom: 1px solid black;">
-                                        <td colspan="4" style="border-left: hidden;border-bottom:hidden;"></td>
-                                        <td style="border-right: 1px solid black;border-left: 1px solid black;">
+                                        <td colspan="6" style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td colspan="3"
+                                            style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>Packing Charge</b>
                                         </td>
-                                        <td colspan="4"
-                                            style="border-left: hidden; border-right: 1px solid black;"></td>
-                                        <td style="border-right;" class="oe_right">
+                                        <td style="border-right;" class="text-right">
                                             <span t-field="o.packing_charge" class="oe_right"/>
                                         </td>
                                     </tr>
                                     <tr style="border-right: 1px solid black;border-bottom: 1px solid black;">
-                                        <td colspan="4" style="border-left: hidden;border-bottom:hidden;"></td>
-                                        <td style="border-right: 1px solid black;border-left: 1px solid black;">
+                                        <td colspan="6" style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td colspan="3"
+                                            style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>Loading Charge</b>
                                         </td>
-                                        <td colspan="4"
-                                            style="border-left: hidden; border-right: 1px solid black;"></td>
-                                        <td style="border-right;" class="oe_right">
+                                        <td style="border-right;" class="text-right">
                                             <span t-field="o.loading_charge" class="oe_right"/>
                                         </td>
                                     </tr>
                                     <tr style="border-right: 1px solid black;border-bottom: 1px solid black;">
-                                        <td colspan="4" style="border-left: hidden;border-bottom:hidden;"></td>
-                                        <td style="border-right: 1px solid black;border-left: 1px solid black;">
+                                        <td colspan="6" style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td colspan="3"
+                                            style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>Transporting Charge</b>
                                         </td>
-                                        <td colspan="4"
-                                            style="border-left: hidden; border-right: 1px solid black;"></td>
-
-                                        <td style="border-right;" class="oe_right">
+                                        <td style="border-right;" class="text-right">
                                             <span t-field="o.transporting_charge" class="oe_right"/>
                                         </td>
                                     </tr>
                                     <tr style="border-right: 1px solid black;border-bottom: 1px solid black;">
-                                        <td colspan="4" style="border-left: hidden;border-bottom:hidden;"></td>
-                                        <td style="border-right: 1px solid black;border-left: 1px solid black;">
+                                        <td colspan="6" style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td colspan="3"
+                                            style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>Discount Amount</b>
                                         </td>
-                                        <td colspan="4"
-                                            style="border-left: hidden; border-right: 1px solid black;"></td>
-
-                                        <td style="border-right;" class="oe_right">
+                                        <td style="border-right;" class="text-right">
                                             <span t-field="o.discount_amount" class="oe_right"/>
                                         </td>
                                     </tr>
                                     <tr style="border-right: 1px solid black;border-bottom: 1px solid black;">
-                                        <td colspan="4" style="border-left: hidden;border-bottom:hidden;"></td>
-                                        <td style="border-right: 1px solid black;border-left: 1px solid black;">
+                                        <td colspan="6" style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td colspan="3"
+                                            style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>CGST</b>
                                         </td>
-                                        <td colspan="4"
-                                            style="border-left: hidden; border-right: 1px solid black;"></td>
-                                        <td style="border-right;" class="oe_right">
+                                        <td style="border-right;" class="text-right">
                                             <span t-field="o.cgst_tax" class="oe_right"/>
                                         </td>
                                     </tr>
                                     <tr style="border-right: 1px solid black;border-bottom: 1px solid black;">
-                                        <td colspan="4" style="border-left: hidden;border-bottom:hidden;"></td>
-                                        <td style="border-right: 1px solid black;border-left: 1px solid black;">
+                                        <td colspan="6" style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td colspan="3"
+                                            style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>SGST</b>
                                         </td>
-                                        <td colspan="4"
-                                            style="border-left: hidden; border-right: 1px solid black;"></td>
-                                        <td style="border-right;" class="oe_right">
+                                        <td style="border-right;" class="text-right">
                                             <span t-field="o.sgst_tax" class="oe_right"/>
                                         </td>
                                     </tr>
 
                                     <tr style="border-right: 1px solid black;border-bottom: 1px solid black;">
-                                        <td colspan="4" style="border-left: hidden;border-bottom:hidden;"></td>
-                                        <td style="border-right: 1px solid black;border-left: 1px solid black;">
+                                        <td colspan="6" style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td colspan="3"
+                                            style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <b>IGST</b>
                                         </td>
-                                        <td colspan="4"
-                                            style="border-left: hidden; border-right: 1px solid black;"></td>
-                                        <td style="border-right;" class="oe_right">
+                                        <td style="border-right;" class="text-right">
                                             <span t-field="o.igst_tax" class="oe_right"/>
                                         </td>
                                     </tr>
                                     <tr class="border-black"
                                         style="border-right: 1px solid black;border-bottom: 1px solid black;">
-                                        <td colspan="4" style="border-left: hidden;border-bottom:hidden;"></td>
-                                        <td style="border-right: 1px solid black;border-left: 1px solid black;">
+                                        <td colspan="6" style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td colspan="3"
+                                            style="border-right: 1px solid black;border-left: 1px solid black;">
                                             <strong>Grand Total</strong>
                                         </td>
-                                        <td colspan="4"
-                                            style="border-left: hidden; border-right: 1px solid black;"></td>
-                                        <td class="oe_right" style="border-right;">
+                                        <td class="text-right" style="border-right;">
                                             <strong>
                                                 <span t-esc="round(o.amount_total2)" class="oe_right"/>
                                             </strong>
@@ -516,25 +525,25 @@
                                 <ol style="padding-left:20px;">
                                     <t t-if="o.price_bool==True">
                                         <li>
-                                            <strong>Price         :</strong>
+                                            <strong>Price :</strong>
                                             <span t-field="o.price_char"/>
                                         </li>
                                     </t>
                                     <t t-if="o.payment_bool==True">
                                         <li>
-                                            <strong>Payment       :</strong>
+                                            <strong>Payment :</strong>
                                             <span t-field="o.payment_char"/>
                                         </li>
                                     </t>
                                     <t t-if="o.freight_bool==True">
                                         <li>
-                                            <strong>Freight       :</strong>
+                                            <strong>Freight :</strong>
                                             <span t-field="o.freight_char"/>
                                         </li>
                                     </t>
                                     <t t-if="o.delivery_bool==True">
                                         <li>
-                                            <strong>Delivery      :</strong>
+                                            <strong>Delivery :</strong>
                                             <span t-field="o.delivery_char"/>
                                         </li>
                                     </t>
@@ -546,25 +555,25 @@
                                     </t>
                                     <t t-if="o.warranty_bool==True">
                                         <li>
-                                            <strong>Warranty      :</strong>
+                                            <strong>Warranty :</strong>
                                             <span t-field="o.warranty_char"/>
                                         </li>
                                     </t>
                                     <t t-if="o.service_bool==True">
                                         <li>
-                                            <strong>Service       :</strong>
+                                            <strong>Service :</strong>
                                             <span t-field="o.service_char"/>
                                         </li>
                                     </t>
                                     <t t-if="o.tyres_bool==True">
                                         <li>
-                                            <strong>Tyres         :</strong>
+                                            <strong>Tyres :</strong>
                                             <span t-field="o.tyres_char"/>
                                         </li>
                                     </t>
                                     <t t-if="o.accessory_bool==True">
                                         <li>
-                                            <strong>Accessories   :</strong>
+                                            <strong>Accessories :</strong>
                                             <span t-field="o.accessory_char"/>
                                         </li>
                                     </t>
@@ -576,13 +585,13 @@
                                     </t>
                                     <t t-if="o.fastag_bool==True">
                                         <li>
-                                            <strong>Fastag        :</strong>
+                                            <strong>Fastag :</strong>
                                             <span t-field="o.fastag_char"/>
                                         </li>
                                     </t>
                                     <t t-if="o.machine_bool==True">
                                         <li>
-                                            <strong>Machinery     :</strong>
+                                            <strong>Machinery :</strong>
                                             <span t-field="o.machine_char"/>
                                         </li>
                                     </t>

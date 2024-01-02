@@ -1638,10 +1638,11 @@ class purchase_order(models.Model):
 			mpr = self.pool.get('site.purchase').browse(cr,uid,vals['mpr_id'])
 			# date_year = '/'+str(datetime.datetime.today().year) + '-' + str((datetime.datetime.today() + timedelta(days=365)).year)
 			date_year = '/' + str(datetime.datetime.today().year)
-			if mpr.vehicle_purchase != True:
-				vals['name'] = project + '/'+ 'CIVIL/' +  'PO' + po_no + date_year
-			else:
-				vals['name'] = project + '/' + 'MECH/' + 'PO' + po_no + date_year
+        	vals['name'] = project + '/'+ 'S&P/' + po_no + date_year
+        # if mpr.vehicle_purchase != True:
+			# 	vals['name'] = project + '/'+ 'CIVIL/' +  'PO' + po_no + date_year
+			# else:
+			# 	vals['name'] = project + '/' + 'MECH/' + 'PO' + po_no + date_year
 		context = dict(context or {}, mail_create_nolog=True)
 		order = super(purchase_order, self).create(cr, uid, vals, context=context)
 		self.message_post(cr, uid, [order], body=_("RFQ created"), context=context)
