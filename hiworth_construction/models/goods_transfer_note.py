@@ -546,11 +546,17 @@ class GoodsRecieveReport(models.Model):
     def create(self,vals):
         if vals.get('grr_no',False)==False:
             project = self.env['project.project'].browse(vals['project_id'])
-            project.grr_no+=1
-            grr_no=str(project.grr_no).zfill(3)
-            
-            vals['grr_no'] = 'GRR/'  + grr_no + "/"+  str(datetime.now().year)
-            vals['project_id'] =project.id
+            last_grr_no = self.env['goods.recieve.report'].search([], limit=1).grr_no
+            if last_grr_no:
+                new_grr_no = int(last_grr_no.split('/')[1])+1
+                grr_no = str(new_grr_no).zfill(4)
+                vals['grr_no'] = 'GRR/'  + grr_no + "/"+  str(datetime.now().year)
+            else:
+                new_grr_no = 0
+                grr_no = str(new_grr_no).zfill(4)
+                vals['grr_no'] = 'GRR/' + grr_no + "/" + str(datetime.now().year)
+
+            vals['project_id'] = project.id
             supplier =self.env['res.partner'].browse(vals['supplier_id'])
             if supplier and supplier.is_fuel_station:
                 vehicle = self.env['fleet.vehicle'].browse(vals['vehicle_id'])

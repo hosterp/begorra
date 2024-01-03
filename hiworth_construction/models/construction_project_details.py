@@ -1634,11 +1634,11 @@ class purchase_order(models.Model):
 		if vals.get('name', '/') == '/':
 			project = self.pool.get('project.project').browse(cr,uid,vals['project_id']).project_no
 			self.pool.get('project.project').browse(cr,uid,vals['project_id']).po_no +=1
-			po_no=str(self.pool.get('project.project').browse(cr,uid,vals['project_id']).po_no).zfill(3)
+			po_no=str(self.pool.get('project.project').browse(cr,uid,vals['project_id']).po_no).zfill(4)
 			mpr = self.pool.get('site.purchase').browse(cr,uid,vals['mpr_id'])
 			# date_year = '/'+str(datetime.datetime.today().year) + '-' + str((datetime.datetime.today() + timedelta(days=365)).year)
 			date_year = '/' + str(datetime.datetime.today().year)
-        	vals['name'] = project + '/'+ 'S&P/' + po_no + date_year
+        	vals['name'] = str(project) + '/'+ 'S&P/' + po_no + date_year
         # if mpr.vehicle_purchase != True:
 			# 	vals['name'] = project + '/'+ 'CIVIL/' +  'PO' + po_no + date_year
 			# else:
