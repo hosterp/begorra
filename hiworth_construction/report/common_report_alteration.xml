@@ -224,7 +224,8 @@
 
 
                             <!--div class="col-xs-4" align="right" -->
-                            <table align="right" style="font-size: 12px;width:40%;border: 1px solid black;">
+                            <table cellpadding="10" align="right"
+                                   style="font-size: 12px;width:40%;border: 1px solid black; margin-left: 1500px; margin-right: 0px;">
                                 <tr style="border-bottom: 1px solid black;">
                                     <td>
                                         <strong>Billing Details</strong>
