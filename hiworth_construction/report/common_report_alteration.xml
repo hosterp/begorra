@@ -224,8 +224,7 @@
 
 
                             <!--div class="col-xs-4" align="right" -->
-                            <table cellpadding="10" align="right"
-                                   style="font-size: 12px;width:40%;border: 1px solid black; margin-left: 1500px; margin-right: 0px;">
+                            <table align="right" style="font-size: 12px;width:40%;border: 1px solid black;">
                                 <tr style="border-bottom: 1px solid black;">
                                     <td>
                                         <strong>Billing Details</strong>
@@ -391,6 +390,24 @@
                                         <t t-set="total_tax"
                                            t-value="total_tax+line.cgst_tax+line.sgst_tax+line.igst_tax"/>
                                         <t t-set="total" t-value="total+line.total"/>
+                                        <tr>
+                                        </tr>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td  style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td  style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td  style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td  style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td  style="border-left: hidden;border-bottom:hidden;"></td>
+                                        <td  style="border-left: hidden;border-bottom:hidden;"></td>
+
+
+
+                                        <td class="text-right" style="border-right: 1px solid black;">hgfh</td>
+                                        <td class="text-right" style="border-right: 1px solid black;">hgfh4124</td>
+                                        <td class="text-right" style="border-right: 1px solid black;">jhjhjhjjhj</td>
                                     </tr>
                                     <tr style="border-right: 1px solid black;border-bottom: 1px solid black;">
                                         <td colspan="6" style="border-left: hidden;border-bottom:hidden;"></td>
